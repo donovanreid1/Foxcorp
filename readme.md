@@ -1,12 +1,12 @@
-So I made a bit of changes.
+I have made a few changes.
 
-First off it is impossible to build a VNET with address space /26 followed by a sub-net with /24.
+First off, it is impossible to build a VNET with an address space /26 followed by a sub-net with /24.
 
--26 has 64 address spaces while /24 has 256 address spaces.
+/26 has 64 address spaces while /24 has 256 address spaces.
 
-Second I was able to build all the infrastructure in Terraform up to step 5/6.
+Second, I was able to build and deploy all of the infrastructure in Terraform up to step 5/6.
 
-Instead I used Power-Shell, basically my native language to attach the managed identity to the VM and give it contributor access to the storage account. step 5/6
+For the last step, I instead used PowerShell to attach the managed identity to the VM and give it contributor access to the storage account. step 5/6
 
 Technically this is all still infrastructure as code.
 
