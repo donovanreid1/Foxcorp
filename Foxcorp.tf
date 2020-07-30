@@ -84,3 +84,31 @@ resource "azurerm_storage_account" "foxcorp" {
     environment = "staging"
   }
 }
+
+data "azurerm_subscription" "primary" {
+}
+
+#creates role definition with contributor access to istsolutionstesting storage account
+#The scope must be edited to your subscription
+resource "azurerm_role_definition" "foxcorp" {
+  role_definition_id = "00000000-0000-0000-0000-000000000000"
+  name               = "vmroledefinition"
+  scope              = "/subscriptions/<9d6253bd-4b1d-4371-a5fa-1c12a168bb22>/resourceGroups/<devtest>/providers/Microsoft.Storage/storageAccounts/<istsolutionstesting>"
+
+  permissions {
+    actions     = ["Contributor"]
+    not_actions = []
+  }
+
+  assignable_scopes = [
+    data.azurerm_subscription.primary.id,
+  ]
+}
+
+#assigns role assignment to "linuxvm"
+resource "azurerm_role_assignment" "foxcorp" {
+  name               = "00000000-0000-0000-0000-000000000000"
+  scope              = "/subscriptions/<917e32fe-361a-4bb7-aada-92f002a05a39>/resourceGroups/<devtest>/providers/Microsoft.Storage/storageAccounts/<istsolutionstesting>"
+  role_definition_id = azurerm_role_definition.foxcorp.id
+  principal_id       = azurerm_virtual_machine.production.id
+}
