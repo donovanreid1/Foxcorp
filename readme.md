@@ -24,4 +24,4 @@ terraform init
 terraform plan
 terraform apply
 
-The powershell code will have to be changed to match the subscription.
+The Terraform code will have to be changed to match the current subscription.
