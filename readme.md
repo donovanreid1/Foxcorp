@@ -4,14 +4,11 @@ First off, it is impossible to build a VNET with an address space /26 followed b
 
 /26 has 64 address spaces while /24 has 256 address spaces.
 
-Second, I was able to build and deploy all of the infrastructure in Terraform up to step 5/6.
+I added the role definition and the role assignment to the linux vm.
 
-For the last step, I instead used PowerShell to attach the managed identity to the VM and give it contributor access to the storage account. step 5/6
+The role definition is scoped to the istsolutions storage account and gives contributor access.
 
-Technically this is all still infrastructure as code.
-
-I hope this improvisation does not affect my results.
-
+The role assignment is scoped to the linuxvm and assigns the role definition.
 
 Infrastructure deployment:
 
