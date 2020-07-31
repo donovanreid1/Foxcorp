@@ -106,7 +106,7 @@ resource "azurerm_role_definition" "foxcorp" {
   ]
 }
 
-#scopes role assignment to linuxvm
+#assigns role definiton to the linux vm
 resource "azurerm_role_assignment" "foxcorp" {
   ObjectId           = "linuxvm"
   scope              = data.azurerm_subscription.primary.id
