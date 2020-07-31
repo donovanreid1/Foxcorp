@@ -91,7 +91,7 @@ data "azurerm_subscription" "primary" {
 data "azurerm_client_config" "foxcorp" {
 }
 
-#creates a role assignment with write acess to storage accounts
+#creates a role definition with write acess to storage accounts
 resource "azurerm_role_definition" "foxcorp" {
   name               = "linuxvmrole"
   scope              = data.azurerm_subscription.primary.id
@@ -106,7 +106,7 @@ resource "azurerm_role_definition" "foxcorp" {
   ]
 }
 
-#scopes role assignment to linuxvm
+#associates role definition to linuxvm
 resource "azurerm_role_assignment" "foxcorp" {
   scope              = data.azurerm_subscription.primary.id
   role_definition_id = azurerm_role_definition.foxcorp.id
