@@ -23,5 +23,3 @@ Code Foxcorp.tf
 terraform init
 terraform plan
 terraform apply
-
-The Terraform code will have to be changed to match the current subscription.
