@@ -71,6 +71,10 @@ resource "azurerm_virtual_machine" "production" {
     type = "SystemAssigned"
   }
 }
+#stores object id of managed identity to variable
+output "test_msi_object_id" {
+  value = azurerm_virtual_machine.production.identity.0.principal_id
+}
 
 #deploys storage account with Geo Redundant replication
 resource "azurerm_storage_account" "foxcorp" {
@@ -91,7 +95,7 @@ data "azurerm_subscription" "primary" {
 data "azurerm_client_config" "foxcorp" {
 }
 
-#creates a role definition with write acess to storage accounts
+#creates a role assignment with write acess to storage accounts
 resource "azurerm_role_definition" "foxcorp" {
   name               = "linuxvmrole"
   scope              = data.azurerm_subscription.primary.id
@@ -106,9 +110,10 @@ resource "azurerm_role_definition" "foxcorp" {
   ]
 }
 
-#associates role definition to linuxvm
+#scopes role assignment to linuxvm
 resource "azurerm_role_assignment" "foxcorp" {
   scope              = data.azurerm_subscription.primary.id
   role_definition_id = azurerm_role_definition.foxcorp.id
-  principal_id       = "451916d6-9a5a-41da-9d30-519d2c447f74"
+  principal_id       = azurerm_virtual_machine.production.identity.0.principal_id
 }
+
