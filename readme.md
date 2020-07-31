@@ -6,7 +6,7 @@ First off, it is impossible to build a VNET with an address space /26 followed b
 
 I added the role definition and the role assignment to the linux vm.
 
-The role definition is scoped to the istsolutions storage account and gives contributor access.
+The role definition is scoped to storage accounts and gives write access.
 
 The role assignment is scoped to the linuxvm and assigns the role definition.
 
