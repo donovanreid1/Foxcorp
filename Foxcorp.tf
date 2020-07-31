@@ -108,7 +108,8 @@ resource "azurerm_role_definition" "foxcorp" {
 
 #scopes role assignment to linuxvm
 resource "azurerm_role_assignment" "foxcorp" {
-  scope              = "/subscriptions/917e32fe-361a-4bb7-aada-92f002a05a39/resourceGroups/rg1/providers/Microsoft.compute/virtualmachines/linuxvm"
+  ObjectId           = "linuxvm"
+  scope              = data.azurerm_subscription.primary.id
   role_definition_id = azurerm_role_definition.foxcorp.id
   principal_id       = data.azurerm_client_config.foxcorp.client_id
 }
