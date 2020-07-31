@@ -67,8 +67,8 @@ resource "azurerm_virtual_machine" "production" {
   os_profile_linux_config {
     disable_password_authentication = false
   }
-  tags = {
-    environment = "staging"
+  identity {
+    type = "SystemAssigned"
   }
 }
 
@@ -106,10 +106,9 @@ resource "azurerm_role_definition" "foxcorp" {
   ]
 }
 
-#assigns role definiton to the linux vm
+#scopes role assignment to linuxvm
 resource "azurerm_role_assignment" "foxcorp" {
-  ObjectId           = "linuxvm"
   scope              = data.azurerm_subscription.primary.id
   role_definition_id = azurerm_role_definition.foxcorp.id
-  principal_id       = data.azurerm_client_config.foxcorp.client_id
+  principal_id       = "451916d6-9a5a-41da-9d30-519d2c447f74"
 }
