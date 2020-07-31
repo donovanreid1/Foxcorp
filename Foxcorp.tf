@@ -6,7 +6,7 @@ provider "azurerm" {
 
 #Deploy resource group to west us
 resource "azurerm_resource_group" "foxcorp" {
-  name     = "devtest"
+  name     = "rg1"
   location = "West US"
 }
 
@@ -88,15 +88,16 @@ resource "azurerm_storage_account" "foxcorp" {
 data "azurerm_subscription" "primary" {
 }
 
-#creates role definition with contributor access to istsolutionstesting storage account
-#The scope must be edited to your subscription
+data "azurerm_client_config" "foxcorp" {
+}
+
+#creates a role assignment with write acess to storage accounts
 resource "azurerm_role_definition" "foxcorp" {
-  role_definition_id = "00000000-0000-0000-0000-000000000000"
-  name               = "vmroledefinition"
-  scope              = "/subscriptions/917e32fe-361a-4bb7-aada-92f002a05a39/resourceGroups/devtest/providers/Microsoft.Storage/storageAccounts/istsolutionstesting"
+  name               = "linuxvmrole"
+  scope              = data.azurerm_subscription.primary.id
 
   permissions {
-    actions     = ["Contributor"]
+    actions     = ["Microsoft.Storage/storageAccounts/write"]
     not_actions = []
   }
 
@@ -105,10 +106,9 @@ resource "azurerm_role_definition" "foxcorp" {
   ]
 }
 
-#assigns role assignment to "linuxvm"
+#scopes role assignment to linuxvm
 resource "azurerm_role_assignment" "foxcorp" {
-  name               = "00000000-0000-0000-0000-000000000000"
   scope              = "/subscriptions/917e32fe-361a-4bb7-aada-92f002a05a39/resourceGroups/devtest/providers/Microsoft.compute/virtualmachines/linuxvm"
   role_definition_id = azurerm_role_definition.foxcorp.id
-  principal_id       = azurerm_virtual_machine.production.id
+  principal_id       = data.azurerm_client_config.foxcorp.client_id
 }
